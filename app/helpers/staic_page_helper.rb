@@ -1,0 +1,2 @@
+module StaicPageHelper
+end

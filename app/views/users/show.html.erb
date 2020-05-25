@@ -1,14 +1,32 @@
+
+
 <p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= render 'users/follow' if logged_in? %>
+ <section class="user_info">
+        <%= render 'relationships/user_info' %>
+      </section>
+<%= render 'relationships/stats' %>
+    <%= render 'follow_form' if logged_in? %>
+    <% if @user.posts.any? %>
+      <h3>posts (<%= @user.posts.count %>)</h3>
+      <ol class="posts">
+        <%= render @user.posts %>
+        
+      </ol>
+     <section class="post_form">
+        <%= render 'posts/form' %>
+        
+      </section>
+    <% end %>
+  </div>
+</div>
+  <div class="col-md-8">
+    <%= render 'follow_form' if logged_in? %>
+    <% if @user.posts.any? %>
+      <h3>posts (<%= @user.posts.count %>)</h3>
+      <ol class="posts">
+        <%= render @posts %>
+      </ol>
+      <%= will_paginate @posts %>
+    <% end %>
 <%= link_to 'Back', users_path %>

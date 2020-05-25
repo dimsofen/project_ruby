@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_user, only: :show
+  before_action :logged_in_user, only: [:show,:index, :edit, :update, :destroy,
+    :following, :followers]
   # GET /users
   # GET /users.json
   def index
@@ -10,6 +11,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    @posts=@user.posts.paginate(page: params[:page])
   end
 
   # GET /users/new
@@ -57,9 +59,21 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.following.paginate(page: params[:page])
+    render 'show_follow'
+    end
+    def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
+    end
   private
     # Use callbacks to share common setup or constraints between actions.
+  
     def set_user
       @user = User.find(params[:id])
     end
